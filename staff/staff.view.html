@@ -1,0 +1,99 @@
+<div>
+    <div class="row">
+        <div class = "pull-right">
+            <a ng-click = "vm.newStaff()" ng-show ="vm.isEditable" class="btn btn-primary ">New Staff</a>
+            <a href="#/login" class="btn btn-primary ">Exit Portal</a>
+        </div>
+        <div role="tabpanel">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" ng-repeat="tab in vm.tabs" ng-click="vm.selectTab($index)" ng-class="{'active': tab.name === 'Staff'}">
+                    <a aria-controls="home" role="tab" data-toggle="tab"><font size = "5">{{tab.name}}</font></a>
+                </li>
+            </ul>
+            <div class="tab-content" style = "border-width: 2px; border-style: dotted">
+                <div role="tabpanel" class="tab-pane active" id="tab">
+                    <div class="col-md-6" >
+                        <div>
+                            <br></br>
+                            <table class="table">
+                                <tr>
+                                    <td>Staff Name</td><td><input type="text" 
+                                                                  ng-model="search.sname"  size="10" ></td>
+                                    <td>Last name:</td><td><input type="text" 
+                                                                  ng-model="search.dname"  size="10" ></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="height: 300px; overflow: auto;" >
+                            <table class="table" >
+                                <thead><th width='10%'>Staff Name</th>
+                                <th width='10%'>Department Name</th></thead>
+                                <tbody ng-repeat="staff in vm.allStaff| filter:search:strict">
+                                    <tr><td width = '10%'><a ng-click="vm.makeVisible(staff)">{{staff.sname}}</a></td>
+                                        <td width = '10%'>{{staff.dname}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>>
+                    </div>
+                    <div class="col-md-6" ng-show = "vm.showDetail">
+                        <h2>{{vm.cuurentStaff.sname}} Details</h2>
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="staffName" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Staff Name:</label>
+                                <input type="text" name="staffName" id="staffName" style ="width : 200px " ng-readonly="!vm.editLabel"
+                                       value = "{{vm.cuurentStaff.sname}}" class="form-control" ng-model="vm.cuurentStaff.sname" required />
+                                <span ng-show="form.staffName.$dirty && form.staffName.$error.required" class="help-block">Staff Name is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="DepName" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Department Name:</label>
+                                <input type="text" name="depName" id="staffName" style ="width : 200px " ng-readonly="!vm.editLabel"
+                                       value = "{{vm.cuurentStaff.dname}}" class="form-control" ng-model="vm.cuurentStaff.dname" required />
+                                <span ng-show="form.depName.$dirty && form.depName.$error.required" class="help-block">Department Name is required</span>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="form-actions">
+                                        <button type="submit"  ng-click = "vm.edit()" ng-show="vm.showEdit && vm.isEditable" class="btn btn-primary">Edit</button>
+                                        <button type="submit"  ng-click = "vm.update(vm.cuurentStaff)" ng-show="!vm.showEdit && vm.isEditable" class="btn btn-primary">Update</button>
+                                        <button type="submit"  ng-click = "vm.deleteRec(vm.cuurentStaff)" ng-show ="vm.isEditable" class="btn btn-primary">Delete</button>
+                                        <a ng-click="vm.removeVisibility()" class="btn btn-link">close</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6" ng-show = "vm.showNew">
+                        <h3>New Staff Details please :</h3>
+                        <br></br>
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="staffId" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Staff ID:</label>
+                                <input type="text" name="staffName" id="staffName" style ="width : 200px " class="form-control" ng-model="vm.new.sid" required />
+                                <span ng-show="form.staffId.$dirty && form.staffId.$error.required" class="help-block">Staff Id is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="staffName" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Staff Name:</label>
+                                <input type="text" name="staffName" id="staffName" style ="width : 200px " class="form-control" ng-model="vm.new.sname" required />
+                                <span ng-show="form.staffName.$dirty && form.staffName.$error.required" class="help-block">Staff Name is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="depName" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Department Name:</label>
+                                <input type="text" name="depName" id="staffName" style ="width : 200px " class="form-control" ng-model="vm.new.dname" required />
+                                <span ng-show="form.depName.$dirty && form.depName.$error.required" class="help-block">Department Name is required</span>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="form-actions">
+                                        <button type="submit"  ng-click = "vm.create(vm.new)" ng-disabled="form.$invalid" class="btn btn-primary">Add</button>
+                                        <a ng-click="vm.removeVisibility()" class="btn btn-link">cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

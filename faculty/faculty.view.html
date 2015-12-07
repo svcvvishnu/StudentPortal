@@ -1,0 +1,100 @@
+<div>
+    <div class="row">
+
+        <div role="tabpanel">
+            <div class = "pull-right">
+                <a ng-click = "vm.newFaculty()" ng-show ="vm.isEditable" class="btn btn-primary ">New Faculty</a>
+                <a href="#/login" class="btn btn-primary ">Exit Portal</a>
+            </div>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" ng-repeat="tab in vm.tabs" ng-click="vm.selectTab($index)" ng-class="{'active':tab.name === 'Faculty'}">
+                    <a data-target="{{tab.path}}" aria-controls="home" role="tab" data-toggle="tab"><font size = "5">{{tab.name}}</font></a>
+                </li>
+            </ul>
+            <div class="tab-content" style = "border-width: 2px; border-style: dotted">
+                <div role="tabpanel" class="tab-pane active" id="tab">
+                    <div class="col-md-6">
+                        <div>
+                            <br></br>
+                            <table class="table">
+                                <tr>
+                                    <td>Faculty Name</td><td><input type="text" 
+                                                                    ng-model="search.fname"  size="10" ></td>
+                                    <td>Department name:</td><td><input type="text" 
+                                                                  ng-model="search.dname"  size="10" ></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div   style="height: 300px; overflow: auto; ">
+                            <table class="table" >
+                                <thead><th width='10%'>Faculty Name</th>
+                                <th width='10%'>Department Name</th></thead>
+                                <tbody ng-repeat="faculty in vm.allFaculty| filter:search:strict">
+                                    <tr><td width = '10%'><a ng-click="vm.makeVisible(faculty)">{{faculty.fname}}</a></td>
+                                        <td width = '10%'>{{faculty.dname}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6" ng-show = "vm.showDetail">
+                        <h2>{{vm.currentFaculty.fname}} Details</h2>
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="facultyName" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Faculty Name:</label>
+                                <input type="text" name="facultyName" id="facultyName" style ="width : 200px " ng-readonly="!vm.editLabel"
+                                       value = "{{vm.currentFaculty.fname}}" class="form-control" ng-model="vm.currentFaculty.fname" required />
+                                <span ng-show="form.facultyName.$dirty && form.facultyName.$error.required" class="help-block">Faculty Name is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="DepName" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Department Name:</label>
+                                <input type="text" name="DepName" id="DepName" style ="width : 200px " ng-readonly="!vm.editLabel"
+                                       value = "{{vm.currentFaculty.dname}}" class="form-control" ng-model="vm.currentFaculty.dname" required />
+                                <span ng-show="form.DepName.$dirty && form.DepName.$error.required" class="help-block">Department Name is required</span>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="form-actions">
+                                        <button type="submit"  ng-click = "vm.edit()" ng-show="vm.showEdit && vm.isEditable" class="btn btn-primary">Edit</button>
+                                        <button type="submit"  ng-click = "vm.update(vm.currentFaculty)" ng-show="!vm.showEdit && vm.isEditable" class="btn btn-primary">Update</button>
+                                        <button type="submit"  ng-click = "vm.deleteRec(vm.currentFaculty)" ng-show ="vm.isEditable" class="btn btn-primary">Delete</button>
+                                        <a ng-click="vm.removeVisibility()" class="btn btn-link">close</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6" ng-show = "vm.showNew">
+                        <h3>New Faculty Details please :</h3>
+                        <br></br>
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="fid" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Faculty ID:</label>
+                                <input type="text" name="fid" id="fid" style ="width : 200px " class="form-control" ng-model="vm.new.fid" required />
+                                <span ng-show="form.fid.$dirty && form.fid.$error.required" class="help-block">Faculty Id is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="fname" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Faculty Name:</label>
+                                <input type="text" name="fname" id="fname" style ="width : 200px " class="form-control" ng-model="vm.new.fname" required />
+                                <span ng-show="form.fname.$dirty && form.fname.$error.required" class="help-block">Faculty Name is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="depName" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Department Name:</label>
+                                <input type="text" name="depName" id="staffName" style ="width : 200px " class="form-control" ng-model="vm.new.dname" required />
+                                <span ng-show="form.depName.$dirty && form.depName.$error.required" class="help-block">Department Name is required</span>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="form-actions">
+                                        <button type="submit"  ng-click = "vm.create(vm.new)" ng-disabled="form.$invalid" class="btn btn-primary">Add</button>
+                                        <a ng-click="vm.removeVisibility()" class="btn btn-link">cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

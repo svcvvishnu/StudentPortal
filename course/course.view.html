@@ -1,0 +1,231 @@
+<div>
+    <div class="row">
+
+        <div role="tabpanel">
+            <div class = "pull-right">
+                <a ng-click = "vm.newCourse()" ng-show ="vm.isEditable" class="btn btn-primary ">New Course</a>
+                <a ng-click = "vm.showMyCourses = true" ng-show ="!vm.isEditable" class="btn btn-primary ">My Courses</a>
+                <a href="#/login" class="btn btn-primary ">Exit Portal</a>
+            </div>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" ng-repeat="tab in vm.tabs" ng-click="vm.selectTab($index)" ng-class="{'active':tab.name === 'Courses'}">
+                    <a data-target="{{tab.path}}" aria-controls="home" role="tab" data-toggle="tab"><font size = "5">{{tab.name}}</font></a>
+                </li>
+            </ul>
+            <div class="tab-content" style = "border-width: 2px; border-style: dotted">
+                <div role="tabpanel" class="tab-pane active" id="tab">
+                    <div class="col-md-12">
+                        <div>
+                            <br></br>
+                            <table class="table">
+                                <tr>
+                                    <td>Course Name:</td><td><input type="text" 
+                                                                    ng-model="search.cname"  size="10" ></td>
+                                    <td>Meets At:</td><td><input type="text" 
+                                                                 ng-model="search.meetsAt"  size="10" ></td>
+                                    <td>Room:</td><td><input type="text" 
+                                                             ng-model="search.room"  size="10" ></td>
+                                </tr>
+                                <tr>
+                                    <td>Faculty Name:</td><td><input type="text" 
+                                                                     ng-model="search.fname"  size="10" ></td>
+                                    <td>Course Limit:</td><td><input type="text" 
+                                                                     ng-model="search.courseLimit"  size="10" ></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div   style="height: 300px; overflow: auto; ">
+                            <table class="table" >
+                                <thead><th width='10%'>Course Name</th>
+                                <th width='10%'>Meets AT</th>
+                                <th width='10%'>ROOM</th>
+                                <th width='10%'>Faculty Name</th>
+                                <th width='10%'>Course Limit</th>
+                                <th width='10%'>Enrolled Count</th></thead>
+                                <tbody ng-repeat="course in vm.allCourses | filter:search:strict">
+                                    <tr><td width = '10%'><a ng-click="vm.makeVisible(course)">{{course.cname}}</a></td>
+                                        <td width = '10%'>{{course.meetsAt}}</td>
+                                        <td width = '10%'>{{course.room}}</td>
+                                        <td width = '10%'>{{course.fname}}</td>
+                                        <td width = '10%'>{{course.courseLimit}}</td>
+                                        <td width = '10%'>{{course.enrollCount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12" ng-show = "vm.showMyCourses">
+                        <div>
+                            <h3> My Courses </h3>
+                            <div class = "pull-right">
+                                 <a ng-click = "vm.showMyCourses = false"  class="btn btn-primary ">close</a>
+                            </div>
+                            <br></br>
+                            <table class="table">
+                                <tr>
+                                    <td>Course Name:</td><td><input type="text" 
+                                                                    ng-model="search.cname"  size="10" ></td>
+                                    <td>Meets At:</td><td><input type="text" 
+                                                                 ng-model="search.meetsAt"  size="10" ></td>
+                                    <td>Room:</td><td><input type="text" 
+                                                             ng-model="search.room"  size="10" ></td>
+                                </tr>
+                                <tr>
+                                    <td>Faculty Name:</td><td><input type="text" 
+                                                                     ng-model="search.fname"  size="10" ></td>
+                                    <td>Course Limit:</td><td><input type="text" 
+                                                                     ng-model="search.courseLimit"  size="10" ></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div   style="height: 300px; overflow: auto; ">
+                            <table class="table" >
+                                <thead><th width='10%'>Course Name</th>
+                                <th width='10%'>Meets AT</th>
+                                <th width='10%'>ROOM</th>
+                                <th width='10%'>Faculty Name</th>
+                                <th width='10%'>Course Limit</th>
+                                <th width='10%'>Enrolled Count</th></thead>
+                                <tbody ng-repeat="course in vm.allMyCourses | filter:search:strict">
+                                    <tr><td width = '10%'><a ng-click="vm.makeVisible(course)">{{course.cname}}</a></td>
+                                        <td width = '10%'>{{course.meetsAt}}</td>
+                                        <td width = '10%'>{{course.room}}</td>
+                                        <td width = '10%'>{{course.fname}}</td>
+                                        <td width = '10%'>{{course.courseLimit}}</td>
+                                        <td width = '10%'>{{course.enrollCount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6" ng-show = "vm.showDetail">
+                        <h2>{{vm.cuurentCourse.cname}} Details</h2>
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="cname" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Course Name:</label>
+                                <input type="text" name="cname" id="cname" style ="width : 200px " ng-readonly="!vm.editLabel"
+                                       class="form-control" ng-model="vm.cuurentCourse.cname" required />
+                                <span ng-show="form.cname.$dirty && form.cname.$error.required" class="help-block">Student Name is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="meetsAt" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Meets At:</label>
+                                <input type="text" name="meetsAt" id="meetsAt" style ="width : 200px " ng-readonly="!vm.editLabel"
+                                       class="form-control" ng-model="vm.cuurentCourse.meetsAt" required />
+                                <span ng-show="form.meetsAt.$dirty && form.meetsAt.$error.required" class="help-block">Major is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="room" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Course Room:</label>
+                                <input type="text" name="room" id="room" style ="width : 200px " ng-readonly="!vm.editLabel"
+                                       class="form-control" ng-model="vm.cuurentCourse.room" required />
+                                <span ng-show="form.room.$dirty && form.room.$error.required" class="help-block">S Level is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="fname" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Faculty Name:</label>
+                                <input type="text" name="fname" id="fname" style ="width : 200px " ng-readonly="!vm.editLabel"
+                                       class="form-control" ng-model="vm.cuurentCourse.fname" required />
+                                <span ng-show="form.fname.$dirty && form.fname.$error.required" class="help-block">Age is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="courseLimit" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Course Limit:</label>
+                                <input type="text" name="courseLimit" id="courseLimit" style ="width : 200px " ng-readonly="!vm.editLabel"
+                                       class="form-control" ng-model="vm.cuurentCourse.courseLimit" required />
+                                <span ng-show="form.courseLimit.$dirty && form.courseLimit.$error.required" class="help-block">Course Limit is required</span>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="form-actions">
+                                        <button type="submit"  ng-click = "vm.edit()" ng-show="vm.showEdit && vm.isEditable" class="btn btn-primary">Edit</button>
+                                        <button type="submit"  ng-click = "vm.update(vm.cuurentCourse)" ng-show="!vm.showEdit && vm.isEditable" class="btn btn-primary">Update</button>
+                                        <button type="submit"  ng-click = "vm.deleteRec(vm.cuurentCourse)" ng-show ="vm.isEditable" class="btn btn-primary">Delete</button>
+                                        <button type="submit"  ng-click = "vm.enroll(vm.cuurentCourse) " 
+                                                ng-show ="vm.isStudent && !(vm.cuurentCourse.courseLimit === vm.cuurentCourse.enrollCount)" class="btn btn-primary">Enroll</button>
+                                        <a ng-click="vm.enrollStudents(vm.cuurentCourse)" ng-show ="!vm.isStudent" class="btn btn-link">Enrolled Students</a>
+                                        <a ng-click="vm.removeVisibility()" class="btn btn-link">close</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6" ng-show = "vm.showNew">
+                        <h3>New Course Details please :</h3>
+                        <br></br>
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="cid" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Course ID:</label>
+                                <input type="text" name="cid" id="cid" style ="width : 200px " class="form-control" ng-model="vm.new.cid" required />
+                                <span ng-show="form.cid.$dirty && form.cid.$error.required" class="help-block">Student Id is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="cname" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Course Name:</label>
+                                <input type="text" name="cname" id="cname" style ="width : 200px " class="form-control" ng-model="vm.new.cname" required />
+                                <span ng-show="form.cname.$dirty && form.cname.$error.required" class="help-block">Student Name is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="meetsAt" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Meets At:</label>
+                                <input type="text" name="meetsAt" id="meetsAt" style ="width : 200px " class="form-control" ng-model="vm.new.meetsAt" required />
+                                <span ng-show="form.meetsAt.$dirty && form.meetsAt.$error.required" class="help-block">Major is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="room" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Course Room:</label>
+                                <input type="text" name="room" id="room" style ="width : 200px " class="form-control" ng-model="vm.new.room" required />
+                                <span ng-show="form.room.$dirty && form.room.$error.required" class="help-block">S Level is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="fname" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Faculty Name:</label>
+                                <input type="text" name="fname" id="fname" style ="width : 200px " class="form-control" ng-model="vm.new.fname" required />
+                                <span ng-show="form.fname.$dirty && form.fname.$error.required" class="help-block">Age is required</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="courseLimit" class="col-sm-2 control-label" style ="width : 200px ; text-align : right">Course Limit:</label>
+                                <input type="text" name="courseLimit" id="courseLimit" style ="width : 200px " class="form-control" ng-model="vm.new.courseLimit" required />
+                                <span ng-show="form.courseLimit.$dirty && form.courseLimit.$error.required" class="help-block">Course Limit is required</span>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="form-actions">
+                                        <button type="submit"  ng-click = "vm.create(vm.new)" ng-disabled="form.$invalid" class="btn btn-primary">Add</button>
+                                        <a ng-click="vm.removeVisibility()" class="btn btn-link">cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6"  ng-show = "vm.showEnrolled">
+                        <div>
+                            <br></br>
+                            <table class="table">
+                                <tr>
+                                    <td>Student Name:</td><td><input type="text" 
+                                                                  ng-model="search.sname"  size="10" ></td>
+                                    <td>Major:</td><td><input type="text" 
+                                                                  ng-model="search.major"  size="10" ></td>
+                                </tr>
+                                <tr>
+                                    <td>S Level:</td><td><input type="text" 
+                                                                  ng-model="search.sLevel"  size="10" ></td>
+                                    <td>Age:</td><td><input type="text" 
+                                                                  ng-model="search.age"  size="10" ></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="height: 300px; overflow: auto; ">
+                            <table class="table">
+                                <thead><th width='10%'>Student Name</th>
+                                <th width='10%'>Major</th>
+                                <th width='10%'>S Level</th>
+                                <th width='10%'>Age</th></thead>
+                                <tbody ng-repeat="student in vm.enrolledStudents | filter:search:strict">
+                                    <tr><td width = '10%'>{{student.sname}}</td>
+                                        <td width = '10%'>{{student.major}}</td>
+                                        <td width = '10%'>{{student.sLevel}}</td>
+                                        <td width = '10%'>{{student.age}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

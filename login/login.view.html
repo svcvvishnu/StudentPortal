@@ -1,0 +1,20 @@
+﻿<div class="col-md-6 col-md-offset-3">
+    <h2>Provide your ID to enter the portal</h2>
+    <div ng-show="vm.error" class="alert alert-danger">{{vm.error}}</div>
+    <form name="form" ng-submit="vm.login()" role="form">
+        <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+            <label for="username" style="font-size:25px">Login ID :</label>
+            <input type="text" name="username" id="username" class="form-control" ng-model="vm.username" required />
+            <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Login is required</span>
+        </div>
+        <div>
+            <label data-ng-repeat="choice in vm.userTypes.choices">
+                <input type="radio" name="response" ng-model="vm.loginType" ng-value="choice.text" />
+                <font size = "5">{{choice.text}}</font> </br>
+            </label>
+        </div>
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">Login</button> 
+        </div>
+    </form>
+</div>
